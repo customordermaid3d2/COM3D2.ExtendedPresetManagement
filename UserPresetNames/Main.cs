@@ -16,8 +16,7 @@ using UnityEngine.SceneManagement;
 namespace ExtendedPresetManagement
 {
 	[BepInPlugin("ExtendedPresetManagement", "ExtendedPresetManagement", "1.5.2")]
-	[BepInDependency("org.bepinex.plugins.unityinjectorloader", BepInDependency.DependencyFlags.SoftDependency)]
-	[BepInDependency("PropMyItem", BepInDependency.DependencyFlags.SoftDependency)]
+	[BepInDependency("org.bepinex.plugins.unityinjectorloader", BepInDependency.DependencyFlags.SoftDependency)]	
 	public class Main : BaseUnityPlugin
 	{
 		public static Harmony harmony;
@@ -62,8 +61,6 @@ namespace ExtendedPresetManagement
 
 			//We set our patcher so we can call it back and patch dynamically as needed.
 			harmony = Harmony.CreateAndPatchAll(typeof(Main));
-
-
 
 			try
 			{
@@ -163,8 +160,12 @@ namespace ExtendedPresetManagement
 				}
 			};
 		}
-
-		Traverse<bool> _isVisible;
+				
+		Type t;
+		System.Reflection.FieldInfo f;
+		UnityEngine.Object obj;
+		//UnityEngine.Object[] objs;
+		bool isPropMyItem;
 
 		void Start()
         {
@@ -172,55 +173,24 @@ namespace ExtendedPresetManagement
 
 			try
 			{
-				var p = Traverse.CreateWithType("PropMyItem");
-				if (p.TypeExists())
-				{
-					Logger.LogMessage("CreateWithType:" + p.ToString());
-                    _isVisible = p.Field<bool>("_isVisible");
-					Logger.LogMessage("_isVisible:" + _isVisible.ToString());
-					Logger.LogMessage("_isVisible1:" + p.Field<bool>("_isVisible"));
-					Logger.LogMessage("_isVisible2:" + p.Property<bool>("_isVisible"));
-				}
-				else
-				{
-					Logger.LogMessage("CreateWithType null");
-				}
+                t = AccessTools.TypeByName("PropMyItem");
+                if (t!=null)
+                {
+					f = AccessTools.Field (t, "_isVisible");
+					obj = FindObjectOfType(t);
+					if (obj != null)
+                    {
+						//objs = FindObjectsOfType(t);			
+						isPropMyItem = true;
+                    }
+                }
 			}
 			catch (Exception e)
 			{
-				Logger.LogFatal("CreateWithType1:" + e.ToString());
-			}
-
-			try
-			{
-                Type t = AccessTools.TypeByName("PropMyItem");
-                System.Reflection.FieldInfo f = AccessTools.Field(t, "_isVisible");
-				// how to get object?
-				//f.GetValue(obj);
-			}
-			catch (Exception e)
-			{
-				Logger.LogFatal("TypeByName2:" + e.ToString());
-			}
-
-			try
-			{
-				harmony.PatchAll(typeof(PMIPatch3));
-			}
-			catch (Exception e)
-			{
-				Logger.LogFatal($"PMIPatch3 : {e.ToString()}");
-			}
-
-			try
-			{
-				harmony.PatchAll(typeof(PMIPatch2));
-			}
-			catch (Exception e)
-			{
-				Logger.LogFatal($"PMIPatch2 : {e.ToString()}");
+				Logger.LogFatal("Start.AccessTools :" + e.ToString());				
 			}
 		}
+
 
 		void OnGUI()
 		{
@@ -241,8 +211,8 @@ namespace ExtendedPresetManagement
 
 				MyUI.Start();
 			}
-			else if (PMIUIStatus)
-			//else if (_isVisible.Value)
+			//else if (PMIUIStatus)
+			else if (isPropMyItem && (bool)f.GetValue(obj))			
 			{
 				if (RunOnce)
 				{

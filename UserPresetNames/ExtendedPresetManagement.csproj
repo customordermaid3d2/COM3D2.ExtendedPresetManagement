@@ -96,7 +96,6 @@
     <Compile Include="CountDownText.cs" />
     <Compile Include="MyUI.cs" />
     <Compile Include="Main.cs" />
-    <Compile Include="PMIPatch.cs" />
     <None Include="packages.config" />
     <None Include="PresetInfoPanel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
