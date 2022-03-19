@@ -9,6 +9,15 @@ using UnityEngine;
 
 namespace ExtendedPresetManagement
 {
+	class PMIPatch3
+    {
+		[HarmonyPatch("COM3D2.PropMyItem.Plugin.PropMyItem", "Update")]
+		[HarmonyPostfix]
+		static void Update(bool ____isVisible)
+		{
+			Main.PMIUIStatus = ____isVisible;
+		}
+	}	
 	class PMIPatch2
     {
 		[HarmonyPatch("PropMyItem", "Update")]

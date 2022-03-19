@@ -63,6 +63,16 @@ namespace ExtendedPresetManagement
 			try
 			{
 				//Logger.LogFatal(typeof(COM3D2.PropMyItem.Plugin.PropMyItem).AssemblyQualifiedName);
+				harmony.PatchAll(typeof(PMIPatch3));
+			}
+			catch (Exception e)
+			{
+				Logger.LogFatal("PMI was not patched! Might not be loaded...");
+				Logger.LogFatal(e.ToString());
+			}
+			try
+			{
+				//Logger.LogFatal(typeof(COM3D2.PropMyItem.Plugin.PropMyItem).AssemblyQualifiedName);
 				harmony.PatchAll(typeof(PMIPatch2));
 			}
 			catch (Exception e)
