@@ -17,6 +17,7 @@ namespace ExtendedPresetManagement
 {
 	[BepInPlugin("ExtendedPresetManagement", "ExtendedPresetManagement", "1.5.2")]
 	[BepInDependency("org.bepinex.plugins.unityinjectorloader", BepInDependency.DependencyFlags.SoftDependency)]
+	[BepInDependency("PropMyItem", BepInDependency.DependencyFlags.SoftDependency)]
 	public class Main : BaseUnityPlugin
 	{
 		public static Harmony harmony;
@@ -63,107 +64,6 @@ namespace ExtendedPresetManagement
 			harmony = Harmony.CreateAndPatchAll(typeof(Main));
 
 
-			try
-			{
-				var p = Traverse.CreateWithType("PropMyItem");
-				if (p != null)
-				{
-					Logger.LogMessage("CreateWithType1:" + p.ToString());
-				}
-				else
-				{
-					Logger.LogMessage("CreateWithType1 null");
-				}
-			}
-			catch (Exception e)
-			{
-				Logger.LogFatal("CreateWithType1:" + e.ToString());
-			}
-
-			try
-			{
-				var t = AccessTools.TypeByName("PropMyItem");
-				if (t != null)
-				{
-					Logger.LogMessage("TypeByName2:" + t.ToString());
-				}
-				else
-				{
-					Logger.LogMessage("TypeByName2 null");
-				}
-			}
-			catch (Exception e)
-			{
-				Logger.LogFatal("TypeByName2:" + e.ToString());
-			}
-
-			try
-			{
-				var p = Traverse.CreateWithType("COM3D2.PropMyItem.Plugin.PropMyItem");
-				if (p != null)
-				{
-					Logger.LogMessage("CreateWithType3:" + p.ToString());
-				}
-				else
-				{
-					Logger.LogMessage("CreateWithType3 null");
-				}
-			}
-			catch (Exception e)
-			{
-				Logger.LogFatal("CreateWithType3:" + e.ToString());
-			}
-
-			try
-			{
-				var t = AccessTools.TypeByName("COM3D2.PropMyItem.Plugin.PropMyItem");
-				if (t != null)
-				{
-					Logger.LogFatal("TypeByName4:" + t.ToString());
-				}
-				else
-				{
-					Logger.LogMessage("TypeByName4 null");
-				}
-			}
-			catch (Exception e)
-			{
-				Logger.LogFatal("TypeByName4:" + e.ToString());
-			}
-
-
-
-			try
-			{
-				//Logger.LogFatal(typeof(COM3D2.PropMyItem.Plugin.PropMyItem).AssemblyQualifiedName);
-				harmony.PatchAll(typeof(PMIPatch3));
-			}
-			catch (Exception e)
-			{
-				Logger.LogFatal("PMI was not patched! Might not be loaded...");
-				Logger.LogFatal(e.ToString());
-			}
-			try
-			{
-				//Logger.LogFatal(typeof(COM3D2.PropMyItem.Plugin.PropMyItem).AssemblyQualifiedName);
-				harmony.PatchAll(typeof(PMIPatch2));
-			}
-			catch (Exception e)
-			{
-				Logger.LogFatal("PMI was not patched! Might not be loaded...");
-				Logger.LogFatal(e.ToString());
-			}
-
-			try
-			{
-				//Logger.LogFatal(typeof(COM3D2.PropMyItem.Plugin.PropMyItem).AssemblyQualifiedName);
-				harmony.PatchAll(typeof(PMIPatch));
-			}
-			catch (Exception e)
-			{
-				Logger.LogFatal("PMI was not patched! Might not be loaded...");
-				Logger.LogFatal(e.ToString());
-			}
 
 			try
 			{
@@ -264,6 +164,8 @@ namespace ExtendedPresetManagement
 			};
 		}
 
+		Traverse<bool> _isVisible;
+
 		void Start()
         {
 			Logger.LogMessage("Start");
@@ -271,13 +173,17 @@ namespace ExtendedPresetManagement
 			try
 			{
 				var p = Traverse.CreateWithType("PropMyItem");
-				if (p != null)
+				if (p.TypeExists())
 				{
-					Logger.LogMessage("CreateWithType1:" + p.ToString());
+					Logger.LogMessage("CreateWithType:" + p.ToString());
+                    _isVisible = p.Field<bool>("_isVisible");
+					Logger.LogMessage("_isVisible:" + _isVisible.ToString());
+					Logger.LogMessage("_isVisible1:" + p.Field<bool>("_isVisible"));
+					Logger.LogMessage("_isVisible2:" + p.Property<bool>("_isVisible"));
 				}
 				else
 				{
-					Logger.LogMessage("CreateWithType1 null");
+					Logger.LogMessage("CreateWithType null");
 				}
 			}
 			catch (Exception e)
@@ -287,15 +193,10 @@ namespace ExtendedPresetManagement
 
 			try
 			{
-				var t = AccessTools.TypeByName("PropMyItem");
-				if (t != null)
-				{
-					Logger.LogMessage("TypeByName2:" + t.ToString());
-				}
-				else
-				{
-					Logger.LogMessage("TypeByName2 null");
-				}
+                Type t = AccessTools.TypeByName("PropMyItem");
+                System.Reflection.FieldInfo f = AccessTools.Field(t, "_isVisible");
+				// how to get object?
+				//f.GetValue(obj);
 			}
 			catch (Exception e)
 			{
@@ -304,70 +205,20 @@ namespace ExtendedPresetManagement
 
 			try
 			{
-				var p = Traverse.CreateWithType("COM3D2.PropMyItem.Plugin.PropMyItem");
-                if (p!=null)
-                {
-					Logger.LogMessage("CreateWithType3:" + p.ToString());
-                }
-                else
-                {
-					Logger.LogMessage("CreateWithType3 null");
-				}
-			}
-			catch (Exception e)
-			{
-				Logger.LogFatal("CreateWithType3:" + e.ToString());
-			}
-
-			try
-			{
-				var t = AccessTools.TypeByName("COM3D2.PropMyItem.Plugin.PropMyItem");
-				if (t != null)
-				{
-					Logger.LogFatal("TypeByName4:" + t.ToString());
-				}
-				else
-				{
-					Logger.LogMessage("TypeByName4 null");
-				}
-			}
-			catch (Exception e)
-			{
-				Logger.LogFatal("TypeByName4:" + e.ToString());
-			}
-
-
-
-			try
-			{
-				//Logger.LogFatal(typeof(COM3D2.PropMyItem.Plugin.PropMyItem).AssemblyQualifiedName);
 				harmony.PatchAll(typeof(PMIPatch3));
 			}
 			catch (Exception e)
 			{
-				Logger.LogFatal("PMI was not patched! Might not be loaded...");
-				Logger.LogFatal(e.ToString());
-			}
-			try
-			{
-				//Logger.LogFatal(typeof(COM3D2.PropMyItem.Plugin.PropMyItem).AssemblyQualifiedName);
-				harmony.PatchAll(typeof(PMIPatch2));
-			}
-			catch (Exception e)
-			{
-				Logger.LogFatal("PMI was not patched! Might not be loaded...");
-				Logger.LogFatal(e.ToString());
+				Logger.LogFatal($"PMIPatch3 : {e.ToString()}");
 			}
 
 			try
 			{
-				//Logger.LogFatal(typeof(COM3D2.PropMyItem.Plugin.PropMyItem).AssemblyQualifiedName);
-				harmony.PatchAll(typeof(PMIPatch));
+				harmony.PatchAll(typeof(PMIPatch2));
 			}
 			catch (Exception e)
 			{
-				Logger.LogFatal("PMI was not patched! Might not be loaded...");
-				Logger.LogFatal(e.ToString());
+				Logger.LogFatal($"PMIPatch2 : {e.ToString()}");
 			}
 		}
 
@@ -391,6 +242,7 @@ namespace ExtendedPresetManagement
 				MyUI.Start();
 			}
 			else if (PMIUIStatus)
+			//else if (_isVisible.Value)
 			{
 				if (RunOnce)
 				{
