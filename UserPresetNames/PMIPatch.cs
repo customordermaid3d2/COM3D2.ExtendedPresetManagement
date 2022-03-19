@@ -18,6 +18,7 @@ namespace ExtendedPresetManagement
 			Main.PMIUIStatus = ____isVisible;
 		}
 	}	
+
 	class PMIPatch2
     {
 		[HarmonyPatch("PropMyItem", "Update")]

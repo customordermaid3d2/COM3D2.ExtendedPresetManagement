@@ -55,10 +55,83 @@ namespace ExtendedPresetManagement
 
 		void Awake()
 		{
+			Logger.LogMessage("Awake");
+
 			BepLogger = Logger;
 
 			//We set our patcher so we can call it back and patch dynamically as needed.
 			harmony = Harmony.CreateAndPatchAll(typeof(Main));
+
+
+			try
+			{
+				var p = Traverse.CreateWithType("PropMyItem");
+				if (p != null)
+				{
+					Logger.LogMessage("CreateWithType1:" + p.ToString());
+				}
+				else
+				{
+					Logger.LogMessage("CreateWithType1 null");
+				}
+			}
+			catch (Exception e)
+			{
+				Logger.LogFatal("CreateWithType1:" + e.ToString());
+			}
+
+			try
+			{
+				var t = AccessTools.TypeByName("PropMyItem");
+				if (t != null)
+				{
+					Logger.LogMessage("TypeByName2:" + t.ToString());
+				}
+				else
+				{
+					Logger.LogMessage("TypeByName2 null");
+				}
+			}
+			catch (Exception e)
+			{
+				Logger.LogFatal("TypeByName2:" + e.ToString());
+			}
+
+			try
+			{
+				var p = Traverse.CreateWithType("COM3D2.PropMyItem.Plugin.PropMyItem");
+				if (p != null)
+				{
+					Logger.LogMessage("CreateWithType3:" + p.ToString());
+				}
+				else
+				{
+					Logger.LogMessage("CreateWithType3 null");
+				}
+			}
+			catch (Exception e)
+			{
+				Logger.LogFatal("CreateWithType3:" + e.ToString());
+			}
+
+			try
+			{
+				var t = AccessTools.TypeByName("COM3D2.PropMyItem.Plugin.PropMyItem");
+				if (t != null)
+				{
+					Logger.LogFatal("TypeByName4:" + t.ToString());
+				}
+				else
+				{
+					Logger.LogMessage("TypeByName4 null");
+				}
+			}
+			catch (Exception e)
+			{
+				Logger.LogFatal("TypeByName4:" + e.ToString());
+			}
+
+
 
 			try
 			{
@@ -193,7 +266,109 @@ namespace ExtendedPresetManagement
 
 		void Start()
         {
+			Logger.LogMessage("Start");
 
+			try
+			{
+				var p = Traverse.CreateWithType("PropMyItem");
+				if (p != null)
+				{
+					Logger.LogMessage("CreateWithType1:" + p.ToString());
+				}
+				else
+				{
+					Logger.LogMessage("CreateWithType1 null");
+				}
+			}
+			catch (Exception e)
+			{
+				Logger.LogFatal("CreateWithType1:" + e.ToString());
+			}
+
+			try
+			{
+				var t = AccessTools.TypeByName("PropMyItem");
+				if (t != null)
+				{
+					Logger.LogMessage("TypeByName2:" + t.ToString());
+				}
+				else
+				{
+					Logger.LogMessage("TypeByName2 null");
+				}
+			}
+			catch (Exception e)
+			{
+				Logger.LogFatal("TypeByName2:" + e.ToString());
+			}
+
+			try
+			{
+				var p = Traverse.CreateWithType("COM3D2.PropMyItem.Plugin.PropMyItem");
+                if (p!=null)
+                {
+					Logger.LogMessage("CreateWithType3:" + p.ToString());
+                }
+                else
+                {
+					Logger.LogMessage("CreateWithType3 null");
+				}
+			}
+			catch (Exception e)
+			{
+				Logger.LogFatal("CreateWithType3:" + e.ToString());
+			}
+
+			try
+			{
+				var t = AccessTools.TypeByName("COM3D2.PropMyItem.Plugin.PropMyItem");
+				if (t != null)
+				{
+					Logger.LogFatal("TypeByName4:" + t.ToString());
+				}
+				else
+				{
+					Logger.LogMessage("TypeByName4 null");
+				}
+			}
+			catch (Exception e)
+			{
+				Logger.LogFatal("TypeByName4:" + e.ToString());
+			}
+
+
+
+			try
+			{
+				//Logger.LogFatal(typeof(COM3D2.PropMyItem.Plugin.PropMyItem).AssemblyQualifiedName);
+				harmony.PatchAll(typeof(PMIPatch3));
+			}
+			catch (Exception e)
+			{
+				Logger.LogFatal("PMI was not patched! Might not be loaded...");
+				Logger.LogFatal(e.ToString());
+			}
+			try
+			{
+				//Logger.LogFatal(typeof(COM3D2.PropMyItem.Plugin.PropMyItem).AssemblyQualifiedName);
+				harmony.PatchAll(typeof(PMIPatch2));
+			}
+			catch (Exception e)
+			{
+				Logger.LogFatal("PMI was not patched! Might not be loaded...");
+				Logger.LogFatal(e.ToString());
+			}
+
+			try
+			{
+				//Logger.LogFatal(typeof(COM3D2.PropMyItem.Plugin.PropMyItem).AssemblyQualifiedName);
+				harmony.PatchAll(typeof(PMIPatch));
+			}
+			catch (Exception e)
+			{
+				Logger.LogFatal("PMI was not patched! Might not be loaded...");
+				Logger.LogFatal(e.ToString());
+			}
 		}
 
 		void OnGUI()
