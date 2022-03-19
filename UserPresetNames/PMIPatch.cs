@@ -9,8 +9,25 @@ using UnityEngine;
 
 namespace ExtendedPresetManagement
 {
+	class PMIPatch2
+    {
+		[HarmonyPatch("PropMyItem", "Update")]
+		[HarmonyPostfix]
+		static void Update(bool ____isVisible)
+		{
+			Main.PMIUIStatus = ____isVisible;
+		}
+	}
 	class PMIPatch
 	{
+		//[HarmonyPatch(typeof(PropMyItem), "Update")]
+		[HarmonyPatch(typeof(PropMyItem), "Update")]
+		[HarmonyPostfix]
+		static void Update(bool ____isVisible)
+		{
+			Main.PMIUIStatus = ____isVisible;
+		}
+
 		/*
 		[HarmonyPatch(typeof(PropMyItem), "Update")]
 		[HarmonyTranspiler]
@@ -45,70 +62,6 @@ namespace ExtendedPresetManagement
 		}
 		*/
 
-		[HarmonyPatch(typeof(PropMyItem), "Update")]
-		[HarmonyPostfix]
-		static void Update(bool ____isVisible)
-        {
-			Main.PMIUIStatus = ____isVisible;
-		}
 
-		/*
-		[HarmonyPatch(typeof(PropMyItem), "guiSelectedCategory")]
-		[HarmonyTranspiler]
-		static IEnumerable<CodeInstruction> CodeTranspiler1(IEnumerable<CodeInstruction> instructions, ILGenerator il)
-		{
-
-			var custominstruc = new CodeMatcher(instructions, il)
-			.MatchForward(true,
-			new CodeMatch(OpCodes.Ldarg_0),
-			new CodeMatch(OpCodes.Ldfld),
-			new CodeMatch(OpCodes.Ldarg_0),
-			new CodeMatch(OpCodes.Ldfld),
-			new CodeMatch(OpCodes.Callvirt),
-			new CodeMatch(OpCodes.Ldfld),
-			new CodeMatch(OpCodes.Ldloc_S),
-			new CodeMatch(OpCodes.Ldelem_Ref),
-			new CodeMatch(OpCodes.Call),
-			new CodeMatch(OpCodes.Call),
-			new CodeMatch(OpCodes.Brfalse)
-			)
-			.Advance(1)
-			.Insert(
-			new CodeInstruction(OpCodes.Ldarg_0),
-			Transpilers.EmitDelegate<Action>(() =>
-			{
-				Debug.Log("Label comes next.");
-			}))
-			.CreateLabel(out var target)
-			.Start()
-			//var custominstruc = new CodeMatcher(instructions)
-			.MatchForward(false,
-			new CodeMatch(OpCodes.Ldarg_0),
-			new CodeMatch(OpCodes.Ldfld),
-			new CodeMatch(OpCodes.Ldarg_0),
-			new CodeMatch(OpCodes.Ldfld),
-			new CodeMatch(OpCodes.Callvirt),
-			new CodeMatch(OpCodes.Ldfld),
-			new CodeMatch(OpCodes.Ldloc_S),
-			new CodeMatch(OpCodes.Ldelem_Ref),
-			new CodeMatch(OpCodes.Call),
-			new CodeMatch(OpCodes.Call),
-			new CodeMatch(OpCodes.Brfalse)
-			)
-			.Insert(
-			new CodeInstruction(OpCodes.Ldarg_0),
-			Transpilers.EmitDelegate<Action>(() =>
-			{
-
-				Debug.Log("Delegate is about to be emitted");
-
-			}),
-			new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(Main), "RunOnce")),
-			new CodeInstruction(OpCodes.Brtrue, target)
-			)
-			.InstructionEnumeration();
-
-			return custominstruc;
-		}*/
 	}
 }

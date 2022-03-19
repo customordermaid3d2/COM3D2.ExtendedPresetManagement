@@ -55,18 +55,31 @@ namespace ExtendedPresetManagement
 
 		void Awake()
 		{
+			BepLogger = Logger;
+
 			//We set our patcher so we can call it back and patch dynamically as needed.
 			harmony = Harmony.CreateAndPatchAll(typeof(Main));
 
-			BepLogger = Logger;
+			try
+			{
+				//Logger.LogFatal(typeof(COM3D2.PropMyItem.Plugin.PropMyItem).AssemblyQualifiedName);
+				harmony.PatchAll(typeof(PMIPatch2));
+			}
+			catch (Exception e)
+			{
+				Logger.LogFatal("PMI was not patched! Might not be loaded...");
+				Logger.LogFatal(e.ToString());
+			}
 
 			try
 			{
+				//Logger.LogFatal(typeof(COM3D2.PropMyItem.Plugin.PropMyItem).AssemblyQualifiedName);
 				harmony.PatchAll(typeof(PMIPatch));
 			}
-			catch
+			catch (Exception e)
 			{
-				Logger.LogWarning("PMI was not patched! Might not be loaded...");
+				Logger.LogFatal("PMI was not patched! Might not be loaded...");
+				Logger.LogFatal(e.ToString());
 			}
 
 			try
@@ -75,7 +88,7 @@ namespace ExtendedPresetManagement
 			}
 			catch
 			{
-				Logger.LogWarning("ExternalPreset was not patched! Might not be loaded...");
+				Logger.LogFatal("ExternalPreset was not patched! Might not be loaded...");
 			}
 
 			@this2 = this;
@@ -166,6 +179,11 @@ namespace ExtendedPresetManagement
 					}
 				}
 			};
+		}
+
+		void Start()
+        {
+
 		}
 
 		void OnGUI()
