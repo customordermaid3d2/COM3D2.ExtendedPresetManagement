@@ -11,6 +11,7 @@ namespace ExtendedPresetManagement
 {
 	class PMIPatch
 	{
+		/*
 		[HarmonyPatch(typeof(PropMyItem), "Update")]
 		[HarmonyTranspiler]
 		static IEnumerable<CodeInstruction> CodeTranspiler(IEnumerable<CodeInstruction> instructions)
@@ -42,6 +43,15 @@ namespace ExtendedPresetManagement
 
 			return custominstruc;
 		}
+		*/
+
+		[HarmonyPatch(typeof(PropMyItem), "Update")]
+		[HarmonyPostfix]
+		static void Update(bool ____isVisible)
+        {
+			Main.PMIUIStatus = ____isVisible;
+		}
+
 		/*
 		[HarmonyPatch(typeof(PropMyItem), "guiSelectedCategory")]
 		[HarmonyTranspiler]

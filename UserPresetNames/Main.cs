@@ -66,7 +66,7 @@ namespace ExtendedPresetManagement
 			}
 			catch
 			{
-				Debug.LogWarning("PMI was not patched! Might not be loaded...");
+				Logger.LogWarning("PMI was not patched! Might not be loaded...");
 			}
 
 			try
@@ -75,7 +75,7 @@ namespace ExtendedPresetManagement
 			}
 			catch
 			{
-				Debug.LogWarning("ExternalPreset was not patched! Might not be loaded...");
+				Logger.LogWarning("ExternalPreset was not patched! Might not be loaded...");
 			}
 
 			@this2 = this;
@@ -256,12 +256,22 @@ namespace ExtendedPresetManagement
 				}
 
 				IsAutoSaving = true;
-				this4.PresetSave(this5.m_maid, CharacterMgr.PresetType.All);
+				this4.PresetSave(m_maid, CharacterMgr.PresetType.All);
 				IsAutoSaving = false;
 
 				ScreenText.SetState(false);
 			}
 		}
+
+		private static Maid m_maid;
+
+		[HarmonyPatch(typeof(PresetButtonCtrl), "Init")]
+		[HarmonyPrefix]
+		static void PresetPanelStatusChanged(Maid maid)
+		{
+			m_maid = maid;
+		}
+
 
 		[HarmonyPatch(typeof(PresetMgr), "OpenPresetPanel")]
 		[HarmonyPatch(typeof(PresetMgr), "ClosePresetPanel")]

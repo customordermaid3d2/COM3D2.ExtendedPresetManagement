@@ -43,7 +43,7 @@ namespace ExtendedPresetManagement
 
 			if (Main.CustomPresetDirectory != null)
 			{
-				if (GUILayout.Button("Select"))
+				if (GUILayout.Button("Root"))
 				{
 					Main.CustomPresetDirectory = null;
 
@@ -52,7 +52,7 @@ namespace ExtendedPresetManagement
 						Main.this3.UpdatePresetList();
 					}
 				}
-				GUILayout.Label("Root");
+				//GUILayout.Label("Root");
 			}
 			else
 			{
@@ -71,7 +71,8 @@ namespace ExtendedPresetManagement
 
 				if (Main.CustomPresetDirectory != path)
 				{
-					if (GUILayout.Button("Select"))
+					//if (GUILayout.Button("Select"))
+					if (GUILayout.Button(shortpath))
 					{
 						Main.CustomPresetDirectory = path;
 						if (Main.this3 != null)
@@ -79,7 +80,7 @@ namespace ExtendedPresetManagement
 							Main.this3.UpdatePresetList();
 						}
 					}
-					GUILayout.Label(shortpath);
+					//GUILayout.Label(shortpath);
 				} else 
 				{
 					GUILayout.Toggle(true, shortpath); ;
