@@ -57,9 +57,6 @@
     <Reference Include="COM3D2.ExternalSaveData.Managed">
       <HintPath>H:\COM3D2\Sybaris\COM3D2.ExternalSaveData.Managed.dll</HintPath>
     </Reference>
-    <Reference Include="COM3D2.PropMyItem.Plugin">
-      <HintPath>H:\COM3D2\BepinEx\plugins\COM3D2.PropMyItem.Plugin.dll</HintPath>
-    </Reference>
     <Reference Include="Mono.Cecil, Version=0.10.4.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e, processorArchitecture=MSIL">
       <HintPath>..\packages\Mono.Cecil.0.10.4\lib\net35\Mono.Cecil.dll</HintPath>
     </Reference>
